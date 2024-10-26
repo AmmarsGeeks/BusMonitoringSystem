@@ -1,0 +1,42 @@
+.notification-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+  }
+  
+  .notification-container {
+    background-color: white; /* Notification background color */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 550px; /* Set a width for the notification */
+    text-align: center; /* Center text */
+  }
+  
+  .notification-content {
+    position: relative; /* Position relative for the close button */
+  }
+  .notification-content p {
+    color: black;
+  }
+  
+  .notification-close-button {
+    position: absolute; /* Position close button */
+    top: 5px;
+    right: 10px;
+    border: none;
+    background: none;
+    font-size: 20px; /* Font size for close button */
+    cursor: pointer; /* Change cursor on hover */
+  }
+  
+  .notification-close-button:hover {
+    color: red; /* Change color on hover for visibility */
+  }

@@ -1,0 +1,32 @@
+{
+  "functions": {
+    "predeploy": [
+      "npm --prefix ./ run build"
+    ],
+    "source": "./",
+    "emulators": {
+      "firestore": {
+        "port": "5500"
+      }
+    },
+    "firestore": {}
+  },
+  "emulators": {
+    "functions": {
+      "port": 5002
+    },
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true,
+    "database": {
+      "port": 9000
+    }
+  }
+}
