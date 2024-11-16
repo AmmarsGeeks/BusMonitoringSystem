@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
 const BusDialog = ({ visible, onClose, isEditing, initialValues,  isDelete , onDelete }) => {
 
   const form = useFormik({
-    initialValues: initialValues || { busNumber: '', driver: '', capacity: '' },
+    initialValues: initialValues || { busNumber: '', driver: '', capacity: '', time: '' },
     validationSchema: Yup.object({
       busNumber: Yup.string().required('Bus number is required'),
       driver: Yup.string().required('Driver name is required'),
@@ -24,6 +24,11 @@ const BusDialog = ({ visible, onClose, isEditing, initialValues,  isDelete , onD
         .required('Capacity is required')
         .positive('Capacity must be a positive number')
         .integer('Capacity must be an integer'),
+      time: Yup.number()
+        .required('Time is required')
+        .positive('Time must be a positive number')
+        .integer('Time must be an integer')
+        .max(300, 'Time cannot exceed 300'),
     }),
     onSubmit: (values) => {
       const uniqueId = isEditing ? initialValues.id : generateUniqueId(); // Use existing ID for editing
@@ -31,8 +36,9 @@ const BusDialog = ({ visible, onClose, isEditing, initialValues,  isDelete , onD
         busNumber: values.busNumber,
         driver: values.driver,
         capacity: values.capacity,
+        time: values.time,
       };
-
+  
       // Push data to Firebase Realtime Database
       set(ref(database, 'Buses/' + uniqueId), busData)
         .then(() => {
@@ -40,7 +46,7 @@ const BusDialog = ({ visible, onClose, isEditing, initialValues,  isDelete , onD
             icon: 'success',
             title: 'Success!',
             text: isEditing ? 'Bus updated successfully!' : 'Bus added successfully!',
-            confirmButtonText: 'Okay'
+            confirmButtonText: 'Okay',
           });
           onClose(); // Close dialog after submission
         })
@@ -49,7 +55,7 @@ const BusDialog = ({ visible, onClose, isEditing, initialValues,  isDelete , onD
             icon: 'error',
             title: 'Error!',
             text: 'Error saving bus: ' + error.message,
-            confirmButtonText: 'Try Again'
+            confirmButtonText: 'Try Again',
           });
         });
     },
@@ -113,6 +119,20 @@ const BusDialog = ({ visible, onClose, isEditing, initialValues,  isDelete , onD
   helperText={form.touched.capacity ? form.errors.capacity : ''}
   style={{ marginBottom: '16px' }}
 />
+  <TextField
+    id="time"
+    label="Trip Time In Seconds"
+    fullWidth
+    variant="outlined"
+    onChange={form.handleChange}
+    required
+    inputProps={{ readOnly: isDelete }} 
+    value={form.values.time}
+    error={form.touched.time && !!form.errors.time}
+    onBlur={form.handleBlur}
+    helperText={form.touched.time ? form.errors.time : ''}
+    style={{ marginBottom: '16px' }}
+  />
       </DialogContent>
       <DialogActions>
   <Button variant="outlined" onClick={onClose}>

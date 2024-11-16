@@ -21,7 +21,6 @@ const Notification = () => {
   };
 
   let dateTimeNow = getCurrentDateTime();
-  console.log(dateTimeNow)
 
   useEffect(() => {
     const db = getDatabase();
@@ -69,23 +68,27 @@ const Notification = () => {
 
   return (
     <div>
-      {user && (
-        notification.visible && (
+    {user && (
+      notification.visible && (
         <div className="notification-overlay">
-          <div className="notification-container">
+          <div className="notification-container-danger">
             <div className="notification-content">
-              <p><strong>{notification.title}</strong></p>
-              <p>{notification.body}</p>
+              <img
+                src="https://img.icons8.com/color/96/error--v1.png" // Example danger icon
+                alt="Danger Icon"
+                className="notification-icon"
+              />
+              <p className="notification-title"><strong>{notification.title}</strong></p>
+              <p className="notification-body">{notification.body}</p>
               <button className="notification-close-button" onClick={closeNotification}>
-                &times; 
+                &times;
               </button>
             </div>
           </div>
         </div>
       )
-      )}
-     
-    </div>
+    )}
+  </div>
   );
 }
 

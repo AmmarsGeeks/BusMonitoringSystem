@@ -38,6 +38,7 @@ const Buses = () => {
     { field: "busNumber", headerName: "Bus Number", width: 150, align: "center", headerAlign: "center" },
     { field: "driver", headerName: "Driver", width: 250, align: "center", headerAlign: "center" },
     { field: "capacity", headerName: "Capacity", width: 190, align: "center", headerAlign: "center" },
+    { field: "time", headerName: "Trip Time In Seconds", width: 190, align: "center", headerAlign: "center" },
     {
       field: "actions",
       headerName: "Actions",
