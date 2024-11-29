@@ -2,10 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { getDatabase, ref, onValue } from 'firebase/database'; // Firebase imports
 import './Notification.css';
 import { useCurrentUser } from '../../containers/UserAuthProvider';
+import PassengerDialog from './PassengerDialog';
 
 const Notification = () => {
-  const [notification, setNotification] = useState({ title: '', body: '', visible: false });
+  const [notification, setNotification] = useState({ 
+    title: '', body: '', passengerID: '' , visible: false
+   });
   const [lastNotificationTime, setLastNotificationTime] = useState(0); // Keep track of the last notification time
+  const [modalVisible , setModalVisible] = useState(false);
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [selectedId, setSelectedID] = useState(null);
+
+  const handleCloseDialog = () => {
+    setDialogVisible(false);
+    setSelectedID(null);
+  };
+
+
 
   const getCurrentDateTime = () => {
     const now = new Date();
@@ -47,10 +60,11 @@ const Notification = () => {
 
         // If there are new notifications, update state
         if (newNotifications.length > 0) {
-          const { title, body } = newNotifications[newNotifications.length - 1]; // Get the latest valid notification
+          const { title, body , passengerID  } = newNotifications[newNotifications.length - 1]; // Get the latest valid notification
           setNotification({
             title,
             body,
+            passengerID,
             visible: true,
           });
         }
@@ -66,6 +80,13 @@ const Notification = () => {
   };
   const { user } = useCurrentUser();
 
+  const viewPassenger = (id) => {
+    console.log("passed ID" , id)
+    setNotification((prev) => ({ ...prev, visible: false }));
+    setSelectedID(id);
+    setDialogVisible(true);
+  }
+
   return (
     <div>
     {user && (
@@ -80,6 +101,9 @@ const Notification = () => {
               />
               <p className="notification-title"><strong>{notification.title}</strong></p>
               <p className="notification-body">{notification.body}</p>
+              <button onClick={() => {
+                viewPassenger(notification.passengerID)
+              }} className='btn_notification' > View Passenger </button>
               <button className="notification-close-button" onClick={closeNotification}>
                 &times;
               </button>
@@ -88,6 +112,13 @@ const Notification = () => {
         </div>
       )
     )}
+
+     {/* Dialog to show full image */}
+     <PassengerDialog
+        visible={dialogVisible}
+        onClose={handleCloseDialog}
+        passengerID={selectedId}
+      />
   </div>
   );
 }
